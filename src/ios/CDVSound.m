@@ -274,9 +274,10 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 
             // Avoid excessive buffering so streaming media can play instantly on iOS
             // Removes preplay delay on ios 10+, makes consistent with ios9 behaviour
-            if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
-                avPlayer.automaticallyWaitsToMinimizeStalling = NO;
-            }
+            // if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
+            //     avPlayer.automaticallyWaitsToMinimizeStalling = NO;
+            // }
+            av.automaticallyWaitsToMinimizeStalling = YES;
         }
 
         self.currMediaId = mediaId;
