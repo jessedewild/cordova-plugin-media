@@ -277,7 +277,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             // if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
             //     avPlayer.automaticallyWaitsToMinimizeStalling = NO;
             // }
-            av.automaticallyWaitsToMinimizeStalling = YES;
+            avPlayer.automaticallyWaitsToMinimizeStalling = YES;
         }
 
         self.currMediaId = mediaId;
