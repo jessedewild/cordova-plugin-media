@@ -89,11 +89,13 @@ typedef NSUInteger CDVMediaMsg;
     AVAudioSession* avSession;
     AVPlayer* avPlayer;
     NSString* statusCallbackId;
+    NSNumber* hasAudioStack;
 }
 @property (nonatomic, strong) NSMutableDictionary* soundCache;
 @property (nonatomic, strong) AVAudioSession* avSession;
 @property (nonatomic, strong) NSString* currMediaId;
 @property (nonatomic, strong) NSString* statusCallbackId;
+@property (nonatomic, strong) NSNumber* hasAudioStack;
 
 - (void)startPlayingAudio:(CDVInvokedUrlCommand*)command;
 - (void)startPlayingAudioInBackground:(CDVInvokedUrlCommand*)command;
