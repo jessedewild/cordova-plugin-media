@@ -30,7 +30,7 @@
 
 BOOL keepAvAudioSessionAlwaysActive = NO;
 
-@synthesize soundCache, avSession, currMediaId, statusCallbackId;
+@synthesize soundCache, avSession, currMediaId, statusCallbackId, hasAudioStack;
 
 -(void) pluginInitialize
 {
@@ -419,6 +419,13 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 
     BOOL bError = NO;
 
+    NSNumber* playAudioWhenScreenIsLocked = [options objectForKey:@"playAudioWhenScreenIsLocked"];
+    BOOL bPlayAudioWhenScreenIsLocked = YES;
+    if (playAudioWhenScreenIsLocked != nil) {
+        bPlayAudioWhenScreenIsLocked = [playAudioWhenScreenIsLocked boolValue];
+    }
+    self.hasAudioStack = bPlayAudioWhenScreenIsLocked;
+
     CDVAudioFile* audioFile = [self audioFileForResource:resourcePath withId:mediaId doValidation:YES forRecording:NO];
     if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
         if (audioFile.player == nil) {
@@ -432,12 +439,6 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             // get the audioSession and set the category to allow Playing when device is locked or ring/silent switch engaged
             if ([self hasAudioSession]) {
                 NSError* __autoreleasing err = nil;
-                NSNumber* playAudioWhenScreenIsLocked = [options objectForKey:@"playAudioWhenScreenIsLocked"];
-                BOOL bPlayAudioWhenScreenIsLocked = YES;
-                if (playAudioWhenScreenIsLocked != nil) {
-                    bPlayAudioWhenScreenIsLocked = [playAudioWhenScreenIsLocked boolValue];
-                }
-
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 NSString* sessionMode = AVAudioSessionModeVideoChat;
                 AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers  ;
@@ -695,7 +696,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 [avPlayer pause];
                 avPlayer = nil;
             }
-            if (! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
+            if (! self.hasAudioStack && ! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
                 [self.avSession setCategory:AVAudioSessionCategorySoloAmbient mode:0 options:0 error:nil];
                 [self.avSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
                 self.avSession = nil;
