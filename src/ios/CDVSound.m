@@ -23,7 +23,6 @@
 #define DOCUMENTS_SCHEME_PREFIX @"documents://"
 #define HTTP_SCHEME_PREFIX @"http://"
 #define HTTPS_SCHEME_PREFIX @"https://"
-#define IONIC_SCHEME_PREFIX @"ionic://"
 #define CDVFILE_PREFIX @"cdvfile://"
 #define FILE_PREFIX @"file://"
 
@@ -171,7 +170,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     // 6. starts with a "/"
     //
     // For use case 4-6, it will attempt to find file path in "www" or "LocalFileSystem.TEMPORARY" directory
-    if ([resourcePath hasPrefix:HTTP_SCHEME_PREFIX] || [resourcePath hasPrefix:HTTPS_SCHEME_PREFIX] || [resourcePath hasPrefix:IONIC_SCHEME_PREFIX]) {
+    if ([resourcePath hasPrefix:HTTP_SCHEME_PREFIX] || [resourcePath hasPrefix:HTTPS_SCHEME_PREFIX]) {
         // if it is a http url, use it
         NSLog(@"Will use resource '%@' from the Internet.", resourcePath);
         resourceURL = [NSURL URLWithString:resourcePath];
@@ -315,7 +314,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     } else {
         NSURL* resourceUrl = audioFile.resourceURL;
 
-        if (![resourceUrl isFileURL] && ![resourcePath hasPrefix:CDVFILE_PREFIX]) {
+        // if (![resourceUrl isFileURL] && ![resourcePath hasPrefix:CDVFILE_PREFIX]) {
             // First create an AVPlayerItem
             AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:resourceUrl];
 
@@ -334,7 +333,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             //     avPlayer.automaticallyWaitsToMinimizeStalling = NO;
             // }
             avPlayer.automaticallyWaitsToMinimizeStalling = YES;
-        }
+        // }
 
         self.currMediaId = mediaId;
 
@@ -443,7 +442,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 NSError* __autoreleasing err = nil;
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 NSString* sessionMode = AVAudioSessionModeVideoChat;
-                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers;
+                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionMixWithOthers;
                 [self.avSession setCategory:sessionCategory mode:sessionMode options:options error:&err];
                 if (![self.avSession setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
@@ -533,8 +532,10 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     NSURL* resourceURL = audioFile.resourceURL;
 
     if ([resourceURL isFileURL]) {
-        audioFile.player = [[CDVAudioPlayer alloc] initWithContentsOfURL:resourceURL error:&playerError];
+        NSLog(@"Is File URL");
+        // audioFile.player = [[CDVAudioPlayer alloc] initWithContentsOfURL:resourceURL error:&playerError];
     } else {
+        NSLog(@"Not File URL");
         /*
         NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:resourceURL];
         NSString* userAgent = [self.commandDelegate userAgent];
