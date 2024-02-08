@@ -23,6 +23,7 @@
 #define DOCUMENTS_SCHEME_PREFIX @"documents://"
 #define HTTP_SCHEME_PREFIX @"http://"
 #define HTTPS_SCHEME_PREFIX @"https://"
+#define IONIC_SCHEME_PREFIX @"ionic://"
 #define CDVFILE_PREFIX @"cdvfile://"
 #define FILE_PREFIX @"file://"
 
@@ -170,7 +171,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     // 6. starts with a "/"
     //
     // For use case 4-6, it will attempt to find file path in "www" or "LocalFileSystem.TEMPORARY" directory
-    if ([resourcePath hasPrefix:HTTP_SCHEME_PREFIX] || [resourcePath hasPrefix:HTTPS_SCHEME_PREFIX]) {
+    if ([resourcePath hasPrefix:HTTP_SCHEME_PREFIX] || [resourcePath hasPrefix:HTTPS_SCHEME_PREFIX] || [resourcePath hasPrefix:IONIC_SCHEME_PREFIX]) {
         // if it is a http url, use it
         NSLog(@"Will use resource '%@' from the Internet.", resourcePath);
         resourceURL = [NSURL URLWithString:resourcePath];
@@ -698,7 +699,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 avPlayer = nil;
             }
             if (! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
-                [self.avSession setCategory:AVAudioSessionCategorySoloAmbient mode:0 options:0 error:nil];
+                // [self.avSession setCategory:AVAudioSessionCategorySoloAmbient mode:0 options:0 error:nil];
                 [self.avSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
                 self.avSession = nil;
             }
