@@ -424,7 +424,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     if (playAudioWhenScreenIsLocked != nil) {
         bPlayAudioWhenScreenIsLocked = [playAudioWhenScreenIsLocked boolValue];
     }
-    self.hasAudioStack = bPlayAudioWhenScreenIsLocked;
+    self.hasAudioStack = &bPlayAudioWhenScreenIsLocked;
 
     CDVAudioFile* audioFile = [self audioFileForResource:resourcePath withId:mediaId doValidation:YES forRecording:NO];
     if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
