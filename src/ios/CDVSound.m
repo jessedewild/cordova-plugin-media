@@ -438,10 +438,11 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             // audioFile.player != nil  or player was successfully created
             // get the audioSession and set the category to allow Playing when device is locked or ring/silent switch engaged
             if ([self hasAudioSession]) {
+                NSLog(@"Set AVSession");
                 NSError* __autoreleasing err = nil;
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 NSString* sessionMode = AVAudioSessionModeVideoChat;
-                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers  ;
+                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers;
                 [self.avSession setCategory:sessionCategory mode:sessionMode options:options error:&err];
                 if (![self.avSession setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
@@ -696,7 +697,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 [avPlayer pause];
                 avPlayer = nil;
             }
-            if (! self.hasAudioStack && ! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
+            if (! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
                 [self.avSession setCategory:AVAudioSessionCategorySoloAmbient mode:0 options:0 error:nil];
                 [self.avSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
                 self.avSession = nil;
