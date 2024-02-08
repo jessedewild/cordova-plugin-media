@@ -439,7 +439,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 }
 
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
-                NSString* sessionMode = AVAudioSessionModeVideoCall;
+                NSString* sessionMode = AVAudioSessionModeVideoChat;
                 AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers;
                 [self.avSession setCategory:sessionCategory mode:sessionMode options:options error:&err];
                 if (![self.avSession setActive:YES error:&err]) {
