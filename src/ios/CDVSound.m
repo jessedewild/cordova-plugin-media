@@ -401,6 +401,11 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     // don't care for any callbacks
 }
 
+- (void)startPlayingAudioInBackground:(CDVInvokedUrlCommand*)command
+{
+    [self startPlayingAudio:command];
+}
+
 - (void)startPlayingAudio:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate runInBackground:^{
@@ -433,7 +438,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                     bPlayAudioWhenScreenIsLocked = [playAudioWhenScreenIsLocked boolValue];
                 }
 
-                NSString* sessionCategory = bPlayAudioWhenScreenIsLocked ? AVAudioSessionCategoryPlayback : AVAudioSessionCategorySoloAmbient;
+                NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 [self.avSession setCategory:sessionCategory error:&err];
                 if (![self.avSession setActive:YES error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
