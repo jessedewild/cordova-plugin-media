@@ -440,7 +440,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 NSString* sessionMode = AVAudioSessionModeVideoChat;
-                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionMixWithOthers;
+                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers  ;
                 [self.avSession setCategory:sessionCategory mode:sessionMode options:options error:&err];
                 if (![self.avSession setActive:YES error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
@@ -462,11 +462,9 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                     if (audioFile.rate != nil){
                         float customRate = [audioFile.rate floatValue];
                         NSLog(@"Playing stream with AVPlayer & custom rate");
-                        avPlayer.automaticallyWaitsToMinimizeStalling = YES;
                         [avPlayer setRate:customRate];
                     } else {
                         NSLog(@"Playing stream with AVPlayer & default rate");
-                        avPlayer.automaticallyWaitsToMinimizeStalling = YES;
                         [avPlayer play];
                     }
 
@@ -698,7 +696,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                 avPlayer = nil;
             }
             if (! keepAvAudioSessionAlwaysActive && self.avSession && ! [self isPlayingOrRecording]) {
-                [self.avSession setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+                [self.avSession setCategory:AVAudioSessionCategorySoloAmbient mode:0 options:0 error:nil];
                 [self.avSession setActive:NO error:nil];
                 self.avSession = nil;
             }
