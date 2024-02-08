@@ -332,7 +332,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
             // if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
             //     avPlayer.automaticallyWaitsToMinimizeStalling = NO;
             // }
-            // avPlayer.automaticallyWaitsToMinimizeStalling = YES;
+            avPlayer.automaticallyWaitsToMinimizeStalling = YES;
         }
 
         self.currMediaId = mediaId;
@@ -462,6 +462,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
                     if (audioFile.rate != nil){
                         float customRate = [audioFile.rate floatValue];
                         NSLog(@"Playing stream with AVPlayer & custom rate");
+                        avPlayer.automaticallyWaitsToMinimizeStalling = YES;
                         [avPlayer setRate:customRate];
                     } else {
                         NSLog(@"Playing stream with AVPlayer & default rate");
