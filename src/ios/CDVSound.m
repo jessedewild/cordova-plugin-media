@@ -329,10 +329,10 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 
             // Avoid excessive buffering so streaming media can play instantly on iOS
             // Removes preplay delay on ios 10+, makes consistent with ios9 behaviour
-            // if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
-            //     avPlayer.automaticallyWaitsToMinimizeStalling = NO;
-            // }
-            avPlayer.automaticallyWaitsToMinimizeStalling = YES;
+            if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10,0,0}]) {
+                avPlayer.automaticallyWaitsToMinimizeStalling = NO;
+            }
+            // avPlayer.automaticallyWaitsToMinimizeStalling = YES;
         }
 
         self.currMediaId = mediaId;
@@ -440,7 +440,7 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
 
                 NSString* sessionCategory = AVAudioSessionCategoryPlayAndRecord;
                 NSString* sessionMode = AVAudioSessionModeVideoChat;
-                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDuckOthers;
+                AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionMixWithOthers;
                 [self.avSession setCategory:sessionCategory mode:sessionMode options:options error:&err];
                 if (![self.avSession setActive:YES error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
